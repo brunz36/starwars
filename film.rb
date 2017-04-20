@@ -1,8 +1,11 @@
 require 'httparty'
 require 'json'
+require 'ap'
 
 class Film
-  response = HTTParty.get("http://swapi.co/api/")
+  response = HTTParty.get("http://swapi.co/api/films",)
 
-  return 
+  list = JSON.parse(response.body)
+
+  list["results"].select { |film| puts film["title"]}
 end
