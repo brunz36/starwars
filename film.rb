@@ -3,9 +3,12 @@ require 'json'
 require 'ap'
 
 class Film
-  response = HTTParty.get("http://swapi.co/api/films",)
+  def initialize
+    response = HTTParty.get('http://swapi.co/api/films')
+    @film = JSON.parse(response.body)
+  end
 
-  list = JSON.parse(response.body)
-
-  list["results"].select { |film| puts film["title"]}
+  def opening_crawl(arg)
+    return @film["results"].select { |films| films["episode_id"] == arg}.map { |film| film["opening_crawl"]}
+  end
 end

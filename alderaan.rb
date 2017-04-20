@@ -1,11 +1,15 @@
 require 'awesome_print'
 
-# require_relative 'film'
-# require_relative 'character'
+require_relative 'film'
+require_relative 'character'
 
 class Starwars
+  def initialize
+    @film = Film.new
+    # @character = Character.new
+  end
+
   def menu
-    puts "Please choose a Star Wars film"
     puts "1: The Phantom Menace"
     puts "2: Attack of the Clones"
     puts "3: Revenge of the Sith"
@@ -13,29 +17,29 @@ class Starwars
     puts "5: Empire Strikes Back"
     puts "6: Return of the Jedi"
     puts "7: The Force Awakens"
+    print "Please choose a Star Wars film: "
     selection = gets.chomp.to_i
+    puts ""
 
     case selection
     when 0
-      puts "Please put select 1 thru 7."
+      menu
     when 1
-      puts "1"
+      puts @film.opening_crawl(1)
     when 2
-      puts "2"
+      puts @film.opening_crawl(2)
     when 3
-      puts "3"
+      puts @film.opening_crawl(3)
     when 4
-      puts "4"
+      puts @film.opening_crawl(4)
     when 5
-      puts "5"
+      puts @film.opening_crawl(5)
     when 6
-      puts "6"
+      puts @film.opening_crawl(6)
     when 7
-      puts "7"
+      puts @film.opening_crawl(7)
     end
   end
 end
 
-star_wars = Starwars.new
-
-star_wars.menu
+Starwars.new.menu
