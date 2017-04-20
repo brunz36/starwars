@@ -17,28 +17,14 @@ class Starwars
     puts "5: Empire Strikes Back"
     puts "6: Return of the Jedi"
     puts "7: The Force Awakens"
-    print "Please choose a Star Wars film: "
+    print "Please choose a Star Wars Film: "
     selection = gets.chomp.to_i
     puts ""
 
-    case selection
-    when 0
-      menu
-    when 1
-      puts @film.opening_crawl(1)
-    when 2
-      puts @film.opening_crawl(2)
-    when 3
-      puts @film.opening_crawl(3)
-    when 4
-      puts @film.opening_crawl(4)
-    when 5
-      puts @film.opening_crawl(5)
-    when 6
-      puts @film.opening_crawl(6)
-    when 7
-      puts @film.opening_crawl(7)
-    end
+    puts @film.opening_crawl(selection)
+    puts ""
+    print "Would you like to more information on "
+    puts @film.film_title(selection)
   end
 end
 
