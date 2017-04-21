@@ -10,21 +10,31 @@ class Starwars
   end
 
   def menu
-    puts "1: The Phantom Menace"
-    puts "2: Attack of the Clones"
-    puts "3: Revenge of the Sith"
-    puts "4: A New Hope"
-    puts "5: Empire Strikes Back"
-    puts "6: Return of the Jedi"
-    puts "7: The Force Awakens"
-    print "Please choose a Star Wars Film: "
-    selection = gets.chomp.to_i
-    puts ""
+    until (1..7).include?@selection
+      puts "The Greatest Story ever told, please choose a chapter for more info."
+      @film.list_of_films
+      print "Please choose a Star Wars Film: "
+      @selection = gets.chomp.to_i
+      puts ""
+    end
+    crawl
+  end
 
-    puts @film.opening_crawl(selection)
+  def crawl
+    puts @film.opening_crawl(@selection)
     puts ""
-    print "Would you like to more information on "
-    puts @film.film_title(selection)
+    more_info_film
+  end
+
+  def more_info_film
+    puts "Would you like to know more information on #{@film.film_title(@selection)} or select another film?"
+    print "Yes or No: "
+    yes_no = gets.chomp.downcase
+    if yes_no == "yes"
+      @film.people(@selection)
+    else
+      Starwars.new.menu
+    end
   end
 end
 
