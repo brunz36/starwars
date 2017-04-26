@@ -46,19 +46,18 @@ class Menu
       print "Do you want more information on #{film_to_show.title}. [Y/N]"
       choice = gets.chomp.downcase
       puts
-      if choice == "y"
-        film_to_show.characters.each_with_index do |character, index|
-          puts "#{index + 1} - #{character.name}"
-        end
-
-        print "Choose a character: "
-        choice = gets.chomp.to_i
-
-        character = film_to_show.characters[choice - 1]
-        show_bio(character)
-      else
+      if choice == "n"
         return
       end
+      film_to_show.characters.each_with_index do |character, index|
+        puts "#{index + 1} - #{character.name}"
+      end
+
+      print "Choose a character: "
+      choice = gets.chomp.to_i
+
+      character = film_to_show.characters[choice - 1]
+      show_bio(character)
     end
   end
 
