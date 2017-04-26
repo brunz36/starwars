@@ -11,11 +11,7 @@ class Menu
     response = HTTParty.get(SWAPI_BASE_URL)
     urls = JSON.parse(response.body)
 
-    films_url = urls["films"]
-
-    response = HTTParty.get(films_url)
-    json = JSON.parse(response.body)
-    @films = json["results"].map { |hash| Film.new(hash)}
+    @films = Film.all(urls["films"])
   end
 
   def main_menu
