@@ -9,6 +9,7 @@ class Starwars
     # @character = Character.new
   end
 
+
   def menu
     until (1..7).include?@selection
       puts "The Greatest Story ever told, please choose a chapter for more info."
@@ -27,13 +28,13 @@ class Starwars
   end
 
   def more_info_film
-    puts "Would you like to know more information on #{@film.film_title(@selection)} or select another film?"
+    puts "Would you like to know more information on #{@film.film_title(@selection)}?"
     print "Yes or No: "
     yes_no = gets.chomp.downcase
     if yes_no == "yes"
       @film.people(@selection)
     else
-      Starwars.new.menu
+      ap "NO"
     end
   end
 end
