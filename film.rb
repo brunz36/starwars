@@ -1,20 +1,19 @@
 class Film
-  attr_reader :title, :opening_crawl
+  include SwapiAttribute
 
   def self.all(films_url)
     response = HTTParty.get(films_url)
-    json = JSON.parse(response.body)
-    @films = json["results"].map { |hash| Film.new(hash)}
+    json = response.parsed_response
+    json["results"].map { |hash| Film.new(hash)}
   end
 
-  def initialize(hash)
-    @hash = hash
+  def initialize(details)
+    @details = details
 
-    @title = hash["title"]
-    @opening_crawl = hash["opening_crawl"]
+    define_attributes(%w{title opening_crawl}, details)
   end
 
   def characters
-    @characters ||= @hash["characters"].map { |url| Character.new(url) }
+    @characters ||= @details["characters"].map { |url| Character.new(url) }
   end
 end

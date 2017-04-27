@@ -1,6 +1,7 @@
 require 'httparty'
 require 'json'
 require 'awesome_print'
+require_relative 'swapi_attribute'
 require_relative 'film'
 require_relative 'character'
 
@@ -9,24 +10,30 @@ class Menu
 
   def initialize
     response = HTTParty.get(SWAPI_BASE_URL)
-    urls = JSON.parse(response.body)
 
-    @films = Film.all(urls["films"])
+    @films = Film.all(response.parsed_response["films"])
+  end
+
+  def show_list(list_array, opening_message, choice_message)
+    puts opening_message
+    list_array.each_with_index do |element, index|
+      print "#{index + 1} "
+      yield element
+    end
+
+    print choice_message
+    gets.chomp.to_i
   end
 
   def main_menu
 
     loop do
-      puts "0 - Exit"
-      @films.each_with_index do |film, index|
-        puts "#{index + 1} - #{film.title}"
+      choice = show_list(@films, "0  - Exit", "What film do you want information on? ") do |film|
+        puts " - #{film.title}"
       end
 
-      print "What film do you want information on? "
-      choice = gets.chomp.to_i
-      if choice == 0
-        return
-      end
+      return if choice == 0
+
       show_film(@films[choice - 1])
     end
   end
@@ -42,18 +49,13 @@ class Menu
       print "Do you want more information on #{film_to_show.title}. [Y/N]"
       choice = gets.chomp.downcase
       puts
-      if choice == "n"
-        return
-      end
-      film_to_show.characters.each_with_index do |character, index|
-        puts "#{index + 1} - #{character.name}"
+      return if choice == "n"
+
+      choice = show_list(film_to_show.characters, "", "Choose a character: ") do |character|
+        puts " - #{character.name}"
       end
 
-      print "Choose a character: "
-      choice = gets.chomp.to_i
-
-      character = film_to_show.characters[choice - 1]
-      show_bio(character)
+      show_bio(film_to_show.characters[choice - 1])
     end
   end
 
