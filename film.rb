@@ -1,30 +1,20 @@
-require 'httparty'
-require 'json'
-require 'awesome_print'
-
 class Film
-  def initialize
-    response = HTTParty.get('http://swapi.co/api/films')
-    @film = JSON.parse(response.body)
+  attr_reader :title, :opening_crawl
+
+  def self.all(films_url)
+    response = HTTParty.get(films_url)
+    json = JSON.parse(response.body)
+    @films = json["results"].map { |hash| Film.new(hash)}
   end
 
-  def list_of_films
-    films = @film["results"].map { |films| films["title"] }
-    films.each_with_index { |film_title, index| puts "#{index + 1}: #{film_title}" }
+  def initialize(hash)
+    @hash = hash
+
+    @title = hash["title"]
+    @opening_crawl = hash["opening_crawl"]
   end
 
-  def opening_crawl(arg)
-    film = @film["results"].find { |films| films["episode_id"] == arg}
-    film["opening_crawl"]
-  end
-
-  def film_title(arg)
-    film = @film["results"].find { |films| films["episode_id"] == arg}
-    film["title"]
-  end
-
-  def people(arg)
-    @cast = @film["results"].select { |characters| characters["episode_id"] == arg}.map { |character| character["characters"]}
-    ap @cast
+  def characters
+    @characters ||= @hash["characters"].map { |url| Character.new(url) }
   end
 end
